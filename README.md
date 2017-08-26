@@ -10,6 +10,9 @@ Solved the Subset Sum Automata problem on Reddit r/dailyprogrammer.
   - ~~Set min and max range values.~~
   - ~~Target value / increment / decrement~~
 
-- Clean up check\_neighbors function
+- ~~Clean up check\_neighbors function~~
 
 - ~~Add in a man file.~~(Technically this was done by the clap crate with --help)
+
+
+All finished here. Works nicely and as intended. If you find any bug please open an issue.
