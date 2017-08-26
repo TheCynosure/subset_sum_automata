@@ -5,6 +5,8 @@ https://www.reddit.com/r/dailyprogrammer/comments/6vyihu/20170825_challenge_328_
 
 All finished here. Works nicely and as intended. If you find any bugs please open an issue.
 
+![Subset Sum Automata Gif](https://raw.githubusercontent.com/TheCynosure/subset_sum_automata/master/Subset_Sum_Automata.gif)
+
 ### What is this?
 
 This program mixes Conway's game of life and the Subset Sum problem as mentioned in the problem on Reddit. The point is that a cell takes the subset sum of it's 8 neighbor cells and if they can sum to the __target value__, then the cell is rewarding by having its value incremented by the __reward value__. If not then it is penalized by having its value decremented by the __penalty value__.
