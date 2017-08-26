@@ -15,4 +15,4 @@ Solved the Subset Sum Automata problem on Reddit r/dailyprogrammer.
 - ~~Add in a man file.~~(Technically this was done by the clap crate with --help)
 
 
-All finished here. Works nicely and as intended. If you find any bug please open an issue.
+All finished here. Works nicely and as intended. If you find any bugs please open an issue.
