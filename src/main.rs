@@ -1,37 +1,50 @@
+extern crate clap;
 extern crate rand;
+use clap::{Arg, App};
 use rand::distributions::{IndependentSample, Range};
-use std::env;
 use std::process::Command;
-use std::{thread, time};
 
 mod subset_sum;
 
-const STARTING_VAL_LOW: i32 = 0;
-const STARTING_VAL_HIGH: i32 = 50;
-const BOARD_WIDTH: usize = 100;
-const BOARD_HEIGHT: usize = 75;
+struct BoardProps {
+    starting_val_low: i32,
+    starting_val_high: i32,
+    board_width: usize,
+    board_height: usize,
+}
 
-fn init_board(vec: &mut Vec<Vec<i32>>) {
+impl BoardProps {
+    fn new() -> Self {
+        BoardProps {
+            starting_val_low: 0,
+            starting_val_high: 0,
+            board_width: 0,
+            board_height: 0,     
+        }
+    }
+}
+
+fn init_board(vec: &mut Vec<Vec<i32>>, bp: &BoardProps) {
     let mut rng = rand::thread_rng();
-    let random_range = Range::new(STARTING_VAL_LOW, STARTING_VAL_HIGH);
-    for h in 0..BOARD_HEIGHT {
+    let random_range = Range::new(bp.starting_val_low, bp.starting_val_high);
+    for h in 0..bp.board_height {
         vec.push(Vec::new());
-        for _ in 0..BOARD_WIDTH {
+        for _ in 0..bp.board_width {
             vec[h].push(random_range.ind_sample(&mut rng));   
         }
     }
 }
 
-fn draw_board(vec: &mut Vec<Vec<i32>>) {
-    const COLOR_STEP: i32 = (STARTING_VAL_HIGH - STARTING_VAL_LOW) / 4;
+fn draw_board(vec: &mut Vec<Vec<i32>>, bp: &BoardProps) {
+    let color_step: i32 = (bp.starting_val_high - bp.starting_val_low) / 4;
     for (_, val) in vec.iter().enumerate() {
         for (_, inner_val) in val.iter().enumerate() {
             let end_color_escape = "\x1B[39;49m";
-            let start_color_escape = if *inner_val < (STARTING_VAL_LOW + COLOR_STEP) { 
+            let start_color_escape = if *inner_val < (bp.starting_val_low + color_step) { 
                 "\x1B[30m"
-            } else if *inner_val >= (STARTING_VAL_LOW + COLOR_STEP) && *inner_val < (STARTING_VAL_LOW + 2 * COLOR_STEP) { 
+            } else if *inner_val >= (bp.starting_val_low + color_step) && *inner_val < (bp.starting_val_low + 2 * color_step) { 
                 "\x1B[34m"
-            } else if *inner_val >= (STARTING_VAL_LOW + 2 * COLOR_STEP) && *inner_val < (STARTING_VAL_LOW + 3 * COLOR_STEP) {
+            } else if *inner_val >= (bp.starting_val_low + 2 * color_step) && *inner_val < (bp.starting_val_low + 3 * color_step) {
                 "\x1B[36m"
             } else {
                 "\x1B[37m" 
@@ -77,17 +90,57 @@ fn check_neighbors(vec: &mut Vec<Vec<i32>>, args: &Vec<&str>) {
     }
 }
 
-
 fn main() {
-    //let args: Vec<String> = env::args().collect();
-    let args = vec!["5", "1", "-1"];    
+    let matches = App::new("Subset Sum Automata")
+        .version("1.0")
+        .author("Jack B. <jack.github@gmail.com>")
+        .about("Solves a DailyProgrammer question")
+        .arg(Arg::with_name("INPUT")
+            .help("Target/Increment/Decrement In that order")
+            .required(true)
+            .index(1))
+        .arg(Arg::with_name("width")
+            .short("w")
+            .long("width")
+            .value_name("width_val")
+            .help("Set the width in columns.")
+            .takes_value(true))
+        .arg(Arg::with_name("height")
+            .short("h")
+            .long("height")
+            .value_name("height_val")
+            .help("Set the height in rows.")
+            .takes_value(true))
+        .arg(Arg::with_name("min")
+            .short("i")
+            .long("min")
+            .value_name("min_val")
+            .help("Sets the lower limit of the random target value range.")
+            .takes_value(true))
+        .arg(Arg::with_name("max")
+            .short("a")
+            .long("max")
+            .value_name("max_val")
+            .help("Sets the upper limit of the random target value range.")
+            .takes_value(true))
+        .get_matches();
+    
+    let mut bp = BoardProps::new();
+    
+    bp.board_width = match matches.value_of("width") { Some(x) => x.parse().unwrap(), None => 10, };
+    bp.board_height = match matches.value_of("height") { Some(x) => x.parse().unwrap(), None => 10, };
+
+    bp.starting_val_low = match matches.value_of("min") { Some(x) => x.parse().unwrap(), None => 0, };
+    bp.starting_val_high = match matches.value_of("max") { Some(x) => x.parse().unwrap(), None => 100, };
+        
+    let args: Vec<&str> = matches.value_of("INPUT").unwrap().split('/').collect();
     
     let mut vec: Vec<Vec<i32>> = Vec::new();
-    init_board(&mut vec);
+    init_board(&mut vec, &bp);
     Command::new("clear").spawn().expect("Failed to clear screen");
     loop {
-        draw_board(&mut vec);
+        draw_board(&mut vec, &bp);
         check_neighbors(&mut vec, &args);
-        println!("\x1B[{}A\x1B[{}D", BOARD_HEIGHT + 1, BOARD_WIDTH * 2);
+        println!("\x1B[{}A\x1B[{}D", bp.board_height + 1, bp.board_width * 2);
     }
 }

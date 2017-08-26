@@ -5,3 +5,4 @@ authors = ["TheCynosure <jack.github@gmail.com>"]
 
 [dependencies]
 rand = "0.3"
+clap = "2"
