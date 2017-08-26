@@ -56,6 +56,11 @@ fn draw_board(vec: &mut Vec<Vec<i32>>, bp: &BoardProps) {
 }
 
 fn optional_push(vec: &Vec<Vec<i32>>, temp_vec: &mut Vec<i32>, x: i32, y: i32) {
+    //Pulls a value out of the first vec
+    //  Checks if it is valid, then...
+    //Pulls a value out of the next vec
+    //  Checks if it is valid, then...
+    //Pushes that element onto the temporary vector.
     vec.get(x as usize).map(|u_vec| u_vec.get(y as usize).map(|val| temp_vec.push(*val)));
 }
 
