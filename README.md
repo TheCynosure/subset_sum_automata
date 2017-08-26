@@ -1,5 +1,13 @@
 # subset_sum_automata
-Trying to solve: https://www.reddit.com/r/dailyprogrammer/comments/6vyihu/20170825_challenge_328_hard_subset_sum_automata/
-<br></br>
 
-Trying to solve a problem posted on r/dailyprogrammer. Just solved the first part by answering the subset\_sum problem.
+Solved the Subset Sum Automata problem on Reddit r/dailyprogrammer. 
+
+## TODO:
+
+- Add command line flags for the following things:
+  - Fullscreen
+  - Set size (w, h) for drawing.
+  - Set min and max range values.
+  - Target value / increment / decrement
+- Clean up check\_neighbors function.
+- Add in a man file.
