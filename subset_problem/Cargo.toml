@@ -1,0 +1,6 @@
+[package]
+name = "subset_problem"
+version = "0.1.0"
+authors = ["TheCynosure <jack.github@gmail.com>"]
+
+[dependencies]
