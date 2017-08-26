@@ -80,6 +80,7 @@ fn check_neighbors(vec: &mut Vec<Vec<i32>>, args: &Vec<&str>) {
             optional_push(&vec, &mut temp_vec, h_index + 1, w_index - 1);
             optional_push(&vec, &mut temp_vec, h_index + 1, w_index);
             optional_push(&vec, &mut temp_vec, h_index + 1, w_index + 1);
+            temp_vec.sort();
             if subset_sum::check_no_empty_subset(temp_vec, args[0].parse().unwrap()) {
                 new_board[h_index as usize].push(vec[h_index as usize][w_index as usize]+ (args[1].parse::<i32>().unwrap()));     
             } else {
