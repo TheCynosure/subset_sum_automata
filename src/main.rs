@@ -1,5 +1,6 @@
 extern crate clap;
 extern crate rand;
+extern crate termsize;
 use clap::{Arg, App};
 use rand::distributions::{IndependentSample, Range};
 use std::process::Command;
@@ -129,6 +130,10 @@ fn main() {
             .value_name("max_val")
             .help("Sets the upper limit of the random target value range.")
             .takes_value(true))
+        .arg(Arg::with_name("fullscreen")
+            .short("f")
+            .long("fullscreen")
+            .help("Makes the board fullscreen"))
         .get_matches();
     
     let mut bp = BoardProps::new();
@@ -138,7 +143,13 @@ fn main() {
 
     bp.starting_val_low = match matches.value_of("min") { Some(x) => x.parse().unwrap(), None => 0, };
     bp.starting_val_high = match matches.value_of("max") { Some(x) => x.parse().unwrap(), None => 100, };
-        
+
+    if matches.is_present("fullscreen") {
+        let term_size = termsize::get().unwrap();
+        bp.board_width = term_size.cols as usize / 2;
+        bp.board_height = term_size.rows as usize;
+    }
+    
     let args: Vec<&str> = matches.value_of("INPUT").unwrap().split('/').collect();
     
     let mut vec: Vec<Vec<i32>> = Vec::new();

@@ -65,3 +65,11 @@ Sets the maximum value for the random values generated on the board on start.
 
 __Default Value for Maximum:__ 100
 
+```bash
+./subset_sum_automata 5/1/-1 -f
+or
+./subset_sum_automata 5/1/-1 --fullscreen
+```
+Sets the board to fullscreen
+
+__Default value for fullscreen:__ false
